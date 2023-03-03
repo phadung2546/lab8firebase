@@ -1,38 +1,30 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { onMounted, ref } from "vue";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "vue-router";
+import {  ref,onMounted } from "vue";
+import { getAuth, signOut ,onAuthStateChanged} from "firebase/auth";
+ import { useRouter } from "vue-router";
 
-const router = useRouter();
+ const router = useRouter();
 const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, seie docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    auth.setCredentials(user.ldentifier);
 
-    // ...
-  }
-});
 const logout = ref(false);
 
-onMounted(() => {
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      logout.value = true;
+ onMounted(() => {
+    //const auth = getAuth();
+   onAuthStateChanged(auth, (user) => {
+     if (user) {
+       logout.value = true;
 
       // ...
     } else {
-      logout.value = false;
-      // ...
-    }
-  });
-});
+       logout.value = false;
+       // ...
+     }
+   });
+ });
 
 function LogOut() {
-  const auth = getAuth();
+  // const auth = getAuth();
   signOut(auth)
     .then(() => {
       //
@@ -43,6 +35,10 @@ function LogOut() {
       console.log(error);
     });
 }
+
+ function reserve(){
+   router.push("/about");
+ }
 </script>
 
 <template>
@@ -51,11 +47,15 @@ function LogOut() {
       <v-layout>
         <v-app-bar title="Application bar" color="indigo-darken-4">
           <nav>
-            <RouterLink to="/about">ADDMENU</RouterLink>
-            <RouterLink to="/login">login</RouterLink>
+            
+            <v-btn @click="reserve()" v-if="logout">
+              <RouterLink to="/about">ADDMENU</RouterLink>
+        </v-btn>
+           
             <v-btn icon>
               <v-icon @click="LogOut()" v-if="logout">mdi-export</v-icon>
             </v-btn>
+            <RouterLink to="/login">login</RouterLink>
           </nav></v-app-bar
         >
 

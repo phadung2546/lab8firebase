@@ -88,6 +88,7 @@ const register = () => {
       // Signed in
       const user = userCredential.user;
       alert("Successfully Register" + user);
+      
 
       // ...
     })
